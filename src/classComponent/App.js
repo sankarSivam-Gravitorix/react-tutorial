@@ -2,21 +2,24 @@ import React, { useState } from "react";
 import Welcome from "./Welcome";
 import Form from "./setState";
 import Lifecycle from "./Lifecycle";
+import Author from "../functionalComponent/Jsx";
+import ParentComponent from "../functionalComponent/parentProps";
 
 export default function App() {
   const [roomId, setRoomId] = useState("general");
   const [show, setShow] = useState(false);
   return (
     <>
-      <Welcome name="Sara" />
-      <Welcome name="Cahal" />
-      <Welcome name="Edite" />
+      <ParentComponent />
+
+      <br />
+
       <Form />
-      
+
       <label>
         choose the chat room:
         <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-          <option value="general">General</option>
+          <option value="general">general</option>
           <option value="travel">travel</option>
           <option value="music">music</option>
         </select>
@@ -25,7 +28,7 @@ export default function App() {
         {show ? "close chat" : "open chat"}
       </button>
       {show && <hr />}
-      {show && <Lifecycle roomId={roomId}/>}
+      {show && <Lifecycle roomId={roomId} />}
     </>
   );
 }
