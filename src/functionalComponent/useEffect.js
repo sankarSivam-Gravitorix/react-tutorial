@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-function Slideshow() {
+function UseEffect() {
   const images = [
     "http://www.pixelstalk.net/wp-content/uploads/2016/05/Download-hd-wallpapers-1080p-screen.jpg", //index=0
     "http://www.pixelstalk.net/wp-content/uploads/2016/03/desktop-nature-wallpaper-high-quality-wallpaper.jpg", //index=1
@@ -40,4 +40,4 @@ function Slideshow() {
   );
 }
 
-export default Slideshow;
+export default UseEffect;

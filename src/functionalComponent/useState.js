@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function Biodata() {
+function UseState() {
   const [profile, setProfile] = useState({
     name: "veera",
     location: "kovilpatti",
@@ -35,4 +35,4 @@ function Biodata() {
   );
 }
 
-export default Biodata;
+export default UseState;

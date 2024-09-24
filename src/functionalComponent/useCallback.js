@@ -1,9 +1,11 @@
+// The useCallback hook in React is used to memoize functions, preventing them from being recreated on every render.
+
 import React from "react";
 
-const Usecallback = React.memo(({ name,incrementCart}) => {
+const Usecallback = React.memo(({ name,incrementCart }) => {
+  // react.memo-> prevent the re-render process when the props are not changed
   console.log(name);
-  
-  
+
   return (
     <div>
       <h3

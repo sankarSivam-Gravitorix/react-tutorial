@@ -3,14 +3,17 @@ import Welcome from "./Welcome";
 import Form from "./setState";
 import Lifecycle from "./Lifecycle";
 import Author from "../functionalComponent/Jsx";
-import ParentComponent from "../functionalComponent/parentProps";
 
-export default function App() {
+import App2 from "../functionalComponent/App2";
+
+
+export default function App() { 
   const [roomId, setRoomId] = useState("general");
   const [show, setShow] = useState(false);
   return (
     <>
-      <ParentComponent />
+   
+      <App2/>
 
       <br />
 
@@ -29,6 +32,10 @@ export default function App() {
       </button>
       {show && <hr />}
       {show && <Lifecycle roomId={roomId} />}
+
+    <br/>  <br/>
+
+   
     </>
   );
 }

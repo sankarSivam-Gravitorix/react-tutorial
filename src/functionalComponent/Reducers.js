@@ -1,4 +1,6 @@
-// usereducer is similar to usestate,but instead of providing state and setter function, it provides state and dispatch function.
+
+// useState: A hook for managing simple state in functional components. It’s straightforward and ideal for simple, isolated state values.
+// useReducer: A hook for managing more complex state logic. It allows you to handle state transitions using a reducer function and is beneficial for more structured state management.
 
 // usereducer hooks accepts two arguments
 // -reducer function

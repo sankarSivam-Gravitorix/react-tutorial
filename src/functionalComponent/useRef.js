@@ -8,13 +8,18 @@ import React from "react";
 import { useRef, useEffect, useState } from "react";
 
 function Useref() {
-  //   const [number, setNumber] = useState(0);
-  //   function handleClick() {
-  //     setNumber((prev) => prev + 1);
-  //     console.log(number);
-  //   }
-  const ref=useRef(0);
+  // const [number, setNumber] = useState(0);
+  // function handleClick() {
+  //   setNumber((prev) => prev + 1);
+  //   console.log(number);
+  // }
+  const ref = useRef(0);
+  console.log(ref);
+
   const inputRef = useRef("");
+  
+  
+
   function handleClick() {
     ref.current++;
     console.log(ref.current);

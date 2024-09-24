@@ -25,7 +25,7 @@
 
 import react from "react";
 
-export default function Author() {
+export default function Jsx() {
   const url = "https://tse3.mm.bing.net/th?id=OIP.AMWZcMQXzIRmLCXIDD-0yAHaIu&pid=Api&P=0&h=180";
   const authorName = "Shakespeare";
   const heading = "hi";

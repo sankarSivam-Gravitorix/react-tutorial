@@ -2,7 +2,7 @@ import React from "react";
 
 // Every parent component can pass some information to its child components through props.
 
-function ChildComponent({ message, companyName, person }) {
+function Props({ message, companyName, person }) {
  
 
   return (
@@ -26,4 +26,4 @@ function ChildComponent({ message, companyName, person }) {
     </>
   );
 }
-export default ChildComponent;
+export default Props;
