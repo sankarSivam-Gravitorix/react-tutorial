@@ -53,11 +53,12 @@ function MovieList() {
     setWishlist(wishlist.filter((item) => item !== Movie));
   };
 
-  const handleEmojiAction = (action) => {
-    const message = action === "like" ? "Liked the film" : "Disliked the film";
-    setEmojiMessage(message);
+  const handleEmojiAction = (id, action) => {
+    setEmojiMessage((prevFeedback) => ({
+    //  ...prevFeedback, 
+      // [id]: action === "like" ? "Love the film" : "Disliked the film",
+    }));
   };
-
   return (
     <div style={{ backgroundColor: "black", width: "100%", height: "100vh" }}>
       <h2
@@ -85,7 +86,6 @@ function MovieList() {
             display: "flex",
             transition: "transform 0.5s ease",
             transform: `translateX(-${currentIndex * 10}%)`,
-            
           }}
         >
           {Movies.map((Movie, index) => (
@@ -93,7 +93,7 @@ function MovieList() {
               key={index}
               style={{
                 position: "relative",
-                
+
                 transition: "transform 0.3s ease,z-index 0.3s ease",
                 transform: hoveredIndex === index ? "scale(1.1)" : "scale(1.0)",
                 zIndex: hoveredIndex === index ? 2 : 1,
@@ -110,9 +110,8 @@ function MovieList() {
                   height: "350px",
                   objectFit: "cover",
                   borderRadius: "8px",
-                   opacity: currentIndex === index ? 1 : 0.7,
+                  opacity: currentIndex === index ? 1 : 0.7,
                   paddingLeft: "30px",
-                 
                 }}
               />
               {hoveredIndex === index && (
@@ -132,7 +131,6 @@ function MovieList() {
                     color: "white",
                     borderRadius: "8px",
                     paddingLeft: "30px",
-                    
                   }}
                 >
                   <div
@@ -143,6 +141,7 @@ function MovieList() {
                       backgroundColor: "black",
                       width: "320px",
                       height: "350px",
+                      alignItems:'flex-start'
                     }}
                   >
                     <WatchNowButton movieId={Movie.id} />
@@ -150,10 +149,18 @@ function MovieList() {
                       Movie={Movie}
                       handleAddToWishlist={handleAddToWishlist}
                     />
-                    <EmojiButton onEmojiHover={handleEmojiAction} />
+                    <EmojiButton
+                      onEmojiHover={(action) =>
+                        handleEmojiAction(Movie.id, action)
+                      }
+                    />
+                     {emojiMessage[Movie.id] && (
+                <div style={{ color: "white", marginTop: "10px", textAlign: "center" }}>{emojiMessage[Movie.id]}</div>
+              )}
                   </div>
                 </div>
               )}
+             
             </div>
           ))}
         </div>
