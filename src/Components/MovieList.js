@@ -1,33 +1,10 @@
 import React, { useState } from "react";
-
 import AddToWishlistButton from "./AddToWishlist_Button";
 import EmojiButton from "./Emoji_Button";
 import WatchNowButton from "./WatchNow_Button";
+import Movies from "./Moviedata";
 
 function MovieList() {
-  const Movies = [
-    {
-      src: "https://onlookersmedia.in/wp-content/uploads/2024/01/The-Greatest-of-All-Time-poster.jpg",
-      id: 1,
-    },
-    {
-      src: "https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/db124b182854515.65356352509ab.jpg",
-      id: 2,
-    },
-    {
-      src: "https://mir-s3-cdn-cf.behance.net/project_modules/hd/7236cf129143211.61652315b44ca.jpg",
-      id: 3,
-    },
-    {
-      src: "https://www.oneindia.com/img/2024/08/vaazhai-1724390034.jpg",
-      id: 4,
-    },
-    {
-      src: "https://images.fandango.com/ImageRenderer/820/0/redesign/static/img/default_poster.png/0/images/masterrepository/fandango/237900/Meiyazhagan.JPG",
-      id: 5,
-    },
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [wishlist, setWishlist] = useState([]);
@@ -54,13 +31,13 @@ function MovieList() {
   };
 
   const handleEmojiAction = (id, action) => {
-    setEmojiMessage((prevFeedback) => ({
-    //  ...prevFeedback, 
-      // [id]: action === "like" ? "Love the film" : "Disliked the film",
-    }));
+    // setEmojiMessage((prevFeedback) => ({
+    //   [id]: action === "like" ? "Love the film" : "Disliked the film",
+    // }));
   };
+
   return (
-    <div style={{ backgroundColor: "black", width: "100%", height: "100vh" }}>
+    <div style={{ backgroundColor: "blue", width: "100%", height: "100vh" }}>
       <h2
         style={{
           color: "white",
@@ -93,11 +70,15 @@ function MovieList() {
               key={index}
               style={{
                 position: "relative",
-
-                transition: "transform 0.3s ease,z-index 0.3s ease",
-                transform: hoveredIndex === index ? "scale(1.1)" : "scale(1.0)",
+                width: "320px",
+                height: "350px",
+                borderRadius: "8px",
+                overflow: "hidden",
+                marginLeft: "30px", // Spacing between images
+                transition: "transform 0.3s ease, z-index 0.3s ease",
+                transform:
+                  hoveredIndex === index ? "scale(1.05)" : "scale(1.0)",
                 zIndex: hoveredIndex === index ? 2 : 1,
-                // opacity: currentIndex === index ? 1 : 0.5,
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -106,12 +87,11 @@ function MovieList() {
                 src={Movie.src}
                 alt={`slideshow-${index}`}
                 style={{
-                  width: "320px",
-                  height: "350px",
+                  width: "100%",
+                  height: "100%",
                   objectFit: "cover",
                   borderRadius: "8px",
                   opacity: currentIndex === index ? 1 : 0.7,
-                  paddingLeft: "30px",
                 }}
               />
               {hoveredIndex === index && (
@@ -122,45 +102,89 @@ function MovieList() {
                     left: "0",
                     width: "100%",
                     height: "100%",
-                    // backgroundColor: "rgba(0, 0, 0, 0.5)",
                     display: "flex",
-                    justifyContent: "center",
-                    // alignItems: 'center',
                     flexDirection: "column",
-                    gap: "10px",
                     color: "white",
                     borderRadius: "8px",
-                    paddingLeft: "30px",
+                    overflow: "hidden",
                   }}
                 >
+                  <iframe
+                    src={Movie.trailerSrc}
+                    title={`trailer-${index}`}
+                    style={{
+                      width: "100%",
+                      height: "50%",
+                      border: "none",
+                      borderRadius: "8px 8px 0 0",
+                    }}
+                    allow="autoplay; encrypted-media"
+                  />
                   <div
                     style={{
-                      marginTop: "200px",
                       display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
                       gap: "10px",
+                      // width: "320px",
+                      height: "50%",
                       backgroundColor: "black",
-                      width: "320px",
-                      height: "350px",
-                      alignItems:'flex-start'
+                      padding: "10px",
+                      borderRadius: "0 0 8px 8px",
+                      flexDirection: "column",
                     }}
                   >
-                    <WatchNowButton movieId={Movie.id} />
-                    <AddToWishlistButton
-                      Movie={Movie}
-                      handleAddToWishlist={handleAddToWishlist}
-                    />
-                    <EmojiButton
-                      onEmojiHover={(action) =>
-                        handleEmojiAction(Movie.id, action)
-                      }
-                    />
-                     {emojiMessage[Movie.id] && (
-                <div style={{ color: "white", marginTop: "10px", textAlign: "center" }}>{emojiMessage[Movie.id]}</div>
-              )}
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      <WatchNowButton movieId={Movie.id} />
+                      <AddToWishlistButton
+                        Movie={Movie}
+                        handleAddToWishlist={handleAddToWishlist}
+                      />
+                      <EmojiButton
+                        onEmojiHover={(action) =>
+                          handleEmojiAction(Movie.id, action)
+                        }
+                      />
+                       {emojiMessage[Movie.id] && (
+                      <div
+                        style={{
+                          color: "white",
+                          marginTop: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        {emojiMessage[Movie.id]}
+                      </div>
+                    )}
+                    </div>
+                    {/* Movie Details */}
+                    <div
+                      style={{
+                        color: "white",
+                        marginTop: "10px",
+                        textAlign: "center",
+                        display:'inline-flex',
+                        gap:'10px',
+                        alignItems:'center',
+                        justifyContent:'center'
+                      }}
+                    >
+                      
+                      <p style={{ margin: "5px 0" ,border:'2px solid gray',backgroundColor:'black',fontSize:'15px',padding:'2px'}}>
+                        {Movie.certificate}
+                      </p>
+                      <p style={{ margin: "5px 0",fontSize:'14px', }}>
+                        {Movie.timing}
+                      </p>
+                    
+                      <p style={{ margin: "5px 0",border:'2px solid gray',backgroundColor:'black',fontSize:'12px', }}>
+                       {Movie.quality}
+                      </p>
+                      
+                    </div>
                   </div>
                 </div>
               )}
-             
             </div>
           ))}
         </div>
