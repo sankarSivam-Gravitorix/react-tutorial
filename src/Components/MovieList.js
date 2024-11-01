@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import AddToWishlistButton from "./AddToWishlist_Button";
-import EmojiButton from "./Emoji_Button";
-import WatchNowButton from "./WatchNow_Button";
+import AddToWishlistButton from "./Buttons/AddToWishlist_Button";
+import EmojiButton from "./Buttons/Emoji_Button";
+import WatchNowButton from "./Buttons/WatchNow_Button";
 import Movies from "./Moviedata";
+import WishlistData from "./Wishlistdata";
+import MovieDetailsCard from "./MovieDetailsCard";
+import SlideButtons from "./Buttons/SlideButtons";
+import ViewmoreButton from "./Buttons/Viewmore";
+import Modal from "./Modal";
 
 function MovieList() {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [wishlist, setWishlist] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(null);
   const [emojiMessage, setEmojiMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % Movies.length);
@@ -20,14 +27,14 @@ function MovieList() {
     );
   };
 
-  const handleAddToWishlist = (Movie) => {
-    if (!wishlist.includes(Movie)) {
-      setWishlist([...wishlist, Movie]);
-    }
-  };
-
-  const handleRemoveFromWishlist = (Movie) => {
-    setWishlist(wishlist.filter((item) => item !== Movie));
+  const handleToggleWishlist = (Movie) => {
+    setWishlist((prevWishlist) => {
+      if (prevWishlist.some((item) => item.id === Movie.id)) {
+        return prevWishlist.filter((item) => item.id !== Movie.id);
+      } else {
+        return [...prevWishlist, Movie];
+      }
+    });
   };
 
   const handleEmojiAction = (id, action) => {
@@ -36,6 +43,10 @@ function MovieList() {
     // }));
   };
 
+  const handleViewMoreClick = (Movie) => {
+    setSelectedMovie(Movie); // Set the selected movie
+    setModalOpen(true); // Open the modal
+  };
   return (
     <div style={{ backgroundColor: "blue", width: "100%", height: "100vh" }}>
       <h2
@@ -45,6 +56,7 @@ function MovieList() {
           fontWeight: "bold",
           marginBottom: "20px",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         Latest Releases
@@ -70,11 +82,11 @@ function MovieList() {
               key={index}
               style={{
                 position: "relative",
-                width: "320px",
-                height: "350px",
+                width: "280px",
+                height: "280px",
                 borderRadius: "8px",
                 overflow: "hidden",
-                marginLeft: "30px", // Spacing between images
+                marginLeft: "8px", // Spacing between images
                 transition: "transform 0.3s ease, z-index 0.3s ease",
                 transform:
                   hoveredIndex === index ? "scale(1.05)" : "scale(1.0)",
@@ -122,6 +134,7 @@ function MovieList() {
                   />
                   <div
                     style={{
+                      position: "relative",
                       display: "flex",
                       justifyContent: "flex-start",
                       alignItems: "flex-start",
@@ -138,142 +151,61 @@ function MovieList() {
                       <WatchNowButton movieId={Movie.id} />
                       <AddToWishlistButton
                         Movie={Movie}
-                        handleAddToWishlist={handleAddToWishlist}
+                        handleToggleWishlist={handleToggleWishlist}
+                        wishlist={wishlist}
                       />
                       <EmojiButton
                         onEmojiHover={(action) =>
                           handleEmojiAction(Movie.id, action)
                         }
                       />
-                       {emojiMessage[Movie.id] && (
-                      <div
-                        style={{
-                          color: "white",
-                          marginTop: "10px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {emojiMessage[Movie.id]}
-                      </div>
-                    )}
-                    </div>
-                    {/* Movie Details */}
-                    <div
-                      style={{
-                        color: "white",
-                        marginTop: "10px",
-                        textAlign: "center",
-                        display:'inline-flex',
-                        gap:'10px',
-                        alignItems:'center',
-                        justifyContent:'center'
-                      }}
-                    >
-                      
-                      <p style={{ margin: "5px 0" ,border:'2px solid gray',backgroundColor:'black',fontSize:'15px',padding:'2px'}}>
-                        {Movie.certificate}
-                      </p>
-                      <p style={{ margin: "5px 0",fontSize:'14px', }}>
-                        {Movie.timing}
-                      </p>
+                      {emojiMessage[Movie.id] && (
+                        <div
+                          style={{
+                            color: "white",
+                            marginTop: "10px",
+                            textAlign: "center",
+                          }}
+                        >
+                          {emojiMessage[Movie.id]}
+                        </div>
+                      )}
                     
-                      <p style={{ margin: "5px 0",border:'2px solid gray',backgroundColor:'black',fontSize:'12px', }}>
-                       {Movie.quality}
-                      </p>
-                      
                     </div>
+                    {/* Movie details card Component */}
+                    <MovieDetailsCard
+                      certificate={Movie.certificate}
+                      timing={Movie.timing}
+                      quality={Movie.quality}
+                    />
+                     {/* Position ViewmoreButton absolutely to the right */}
+                     <ViewmoreButton
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        // bottom: "10px",
+                      }}
+                      onClick={() => handleViewMoreClick(Movie)} // Handle click event
+                    />
                   </div>
                 </div>
               )}
             </div>
           ))}
         </div>
-
-        <button
-          onClick={handlePrev}
-          style={{
-            position: "absolute",
-            left: "20px",
-            transform: "translateY(-50%)",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            color: "white",
-            border: "none",
-            padding: "10px",
-            cursor: "pointer",
-            zIndex: 1,
-          }}
-        >
-          &#8249;
-        </button>
-        <button
-          onClick={handleNext}
-          style={{
-            position: "absolute",
-            right: "20px",
-            transform: "translateY(-50%)",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            color: "white",
-            border: "none",
-            padding: "10px",
-            cursor: "pointer",
-            zIndex: 1,
-          }}
-        >
-          &#8250;
-        </button>
+        {/* Use CarouselNavigation component */}
+        <SlideButtons onPrev={handlePrev} onNext={handleNext} />
       </div>
 
-      {wishlist.length > 0 && (
-        <div style={{ color: "white", marginTop: "20px" }}>
-          <h3>Added to Wishlist</h3>
-          <ul
-            style={{
-              display: "flex",
-              gap: "20px",
-              listStyleType: "none",
-              padding: 0,
-            }}
-          >
-            {wishlist.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginLeft: "10px",
-                }}
-              >
-                <img
-                  src={item.src}
-                  alt={`wishlist-${index}`}
-                  style={{
-                    width: "100px",
-                    height: "150px",
-                    objectFit: "cover",
-                    marginRight: "10px",
-                  }}
-                />
-                <button
-                  onClick={() => handleRemoveFromWishlist(item)}
-                  style={{
-                    backgroundColor: "#f44336",
-                    border: "none",
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                    borderRadius: "5px",
-                    color: "white",
-                    marginTop: "10px",
-                    alignItems: "center",
-                  }}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {/* Display the Wishlist */}
+      <WishlistData wishlist={wishlist} currentIndex={currentIndex} />
+
+      {/* Modal to display movie details */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        movie={selectedMovie} // Pass selected movie to the modal
+      />
     </div>
   );
 }

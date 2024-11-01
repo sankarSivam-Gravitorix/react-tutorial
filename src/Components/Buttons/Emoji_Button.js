@@ -53,7 +53,7 @@ const EmojiButton = ({ onEmojiHover }) => {
         <div
           style={{
             position: "absolute",
-            top: "100%",
+            top: "-80%",
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
@@ -63,7 +63,7 @@ const EmojiButton = ({ onEmojiHover }) => {
           {/* Like Container */}
           <div
             style={{
-              backgroundColor: "#444",
+              backgroundColor: "black",
               padding: "5px",
               borderRadius: "5px",
               display: "flex",
@@ -95,7 +95,7 @@ const EmojiButton = ({ onEmojiHover }) => {
           {/* Dislike Container */}
           <div
             style={{
-              backgroundColor: "#444",
+              backgroundColor: "black",
               padding: "5px",
               borderRadius: "5px",
               display: "flex",
