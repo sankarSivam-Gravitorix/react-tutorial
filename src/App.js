@@ -10,6 +10,12 @@ import BorderBottomLeftRadiusAnimation from "./border/leftradius_animation";
 import BorderBottomRightRadius from "./border/border-bottpm-rightradius";
 import BorderBottomRightRadiusAnimation from "./border/rightradius_animation";
 import BorderBottomStyle from "./border/border_bottom_style";
+import BorderImage from "./border/border-image";
+import BorderRightColor from "./border/border-right/color/border-right-color";
+import BorderRightColorAnimation from "./border/border-right/color/right-color-animation";
+import BorderRightStyle from "./border/border-right/style/border-right-style";
+import BorderRightStyleAnimation from "./border/border-right/width/animation";
+import BorderRightWidth from "./border/border-right/width/border-right-width";
 
 function App() {
   return (
@@ -78,6 +84,42 @@ function App() {
       <br />
       <br />
       <BorderBottomStyle/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderImage/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderRightColor/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderRightColorAnimation/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderRightStyle/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderRightStyleAnimation/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <BorderRightWidth/>
     </div>
   );
 }
