@@ -1,12 +1,10 @@
 import React from "react";
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 
-const ViewmoreButton = ({style,onClick}) => {
-  
-
+const ViewmoreButton = ({ style, onClick }) => {
   return (
     <div
-    onClick={onClick} 
+      onClick={onClick}
       style={{
         cursor: "pointer",
         backgroundColor: "black",
@@ -16,17 +14,15 @@ const ViewmoreButton = ({style,onClick}) => {
         justifyContent: "center",
         width: "40px",
         height: "40px",
-        border: '2px solid white',
-        marginTop: '10px',
-        ...style
+        border: "2px solid white",
+        marginTop: "10px",
+        ...style,
       }}
-      title='View MOre'
+      title="View MOre"
     >
-     
-        <ExpandMoreOutlinedIcon style={{ width: "20px", height: "20px", color: "white" }} />
-    
-       
-     
+      <ExpandMoreOutlinedIcon
+        style={{ width: "20px", height: "20px", color: "white" }}
+      />
     </div>
   );
 };

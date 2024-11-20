@@ -7,15 +7,13 @@ import WishlistData from "./Wishlistdata";
 import MovieDetailsCard from "./MovieDetailsCard";
 import SlideButtons from "./Buttons/SlideButtons";
 import ViewmoreButton from "./Buttons/Viewmore";
-import Modal from "./Modal";
+import { WrapText } from "@mui/icons-material";
 
 function MovieList() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [wishlist, setWishlist] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const [emojiMessage, setEmojiMessage] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flippedIndex, setFlippedIndex] = useState(null);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % Movies.length);
@@ -25,6 +23,12 @@ function MovieList() {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? Movies.length - 1 : prevIndex - 1
     );
+  };
+
+  const handleEmojiAction = (id, action) => {
+    // setEmojiMessage((prevFeedback) => ({
+    //   [id]: action === "like" ? "Love the film" : "Disliked the film",
+    // }));
   };
 
   const handleToggleWishlist = (Movie) => {
@@ -37,16 +41,10 @@ function MovieList() {
     });
   };
 
-  const handleEmojiAction = (id, action) => {
-    // setEmojiMessage((prevFeedback) => ({
-    //   [id]: action === "like" ? "Love the film" : "Disliked the film",
-    // }));
+  const handleFlipCard = (index) => {
+    setFlippedIndex(flippedIndex === index ? null : index);
   };
 
-  const handleViewMoreClick = (Movie) => {
-    setSelectedMovie(Movie); // Set the selected movie
-    setModalOpen(true); // Open the modal
-  };
   return (
     <div style={{ backgroundColor: "blue", width: "100%", height: "100vh" }}>
       <h2
@@ -83,129 +81,183 @@ function MovieList() {
               style={{
                 position: "relative",
                 width: "280px",
-                height: "280px",
-                borderRadius: "8px",
-                overflow: "hidden",
-                marginLeft: "8px", // Spacing between images
+                height: "300px",
+                marginLeft: "8px",
+                perspective: "1000px",
                 transition: "transform 0.3s ease, z-index 0.3s ease",
                 transform:
                   hoveredIndex === index ? "scale(1.05)" : "scale(1.0)",
+                  
                 zIndex: hoveredIndex === index ? 2 : 1,
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <img
-                src={Movie.src}
-                alt={`slideshow-${index}`}
+              <div
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                  opacity: currentIndex === index ? 1 : 0.7,
+                  position: "relative",
+                  transformStyle: "preserve-3d",
+                  transition: "transform 0.6s",
+                  transform:
+                    flippedIndex === index ? "rotateY(180deg)" : "rotateY(0)",
                 }}
-              />
-              {hoveredIndex === index && (
+              >
+                {/* Front side */}
                 <div
                   style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
                     width: "100%",
                     height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    color: "white",
-                    borderRadius: "8px",
-                    overflow: "hidden",
+                    position: "absolute",
+                    backfaceVisibility: "hidden",
                   }}
                 >
-                  <iframe
-                    src={Movie.trailerSrc}
-                    title={`trailer-${index}`}
+                  <img
+                    src={Movie.src}
+                    alt={`movie-${index}`}
                     style={{
                       width: "100%",
-                      height: "50%",
-                      border: "none",
-                      borderRadius: "8px 8px 0 0",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                      // opacity: hoveredIndex === index ? 0 : 1,
+                      // transition: "opacity 0.3s ease",
                     }}
-                    allow="autoplay; encrypted-media"
                   />
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      gap: "10px",
-                      // width: "320px",
-                      height: "50%",
-                      backgroundColor: "black",
-                      padding: "10px",
-                      borderRadius: "0 0 8px 8px",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: "10px" }}>
-                      <WatchNowButton movieId={Movie.id} />
-                      <AddToWishlistButton
-                        Movie={Movie}
-                        handleToggleWishlist={handleToggleWishlist}
-                        wishlist={wishlist}
-                      />
-                      <EmojiButton
-                        onEmojiHover={(action) =>
-                          handleEmojiAction(Movie.id, action)
-                        }
-                      />
-                      {emojiMessage[Movie.id] && (
-                        <div
-                          style={{
-                            color: "white",
-                            marginTop: "10px",
-                            textAlign: "center",
-                          }}
-                        >
-                          {emojiMessage[Movie.id]}
-                        </div>
-                      )}
-                    
-                    </div>
-                    {/* Movie details card Component */}
-                    <MovieDetailsCard
-                      certificate={Movie.certificate}
-                      timing={Movie.timing}
-                      quality={Movie.quality}
-                    />
-                     {/* Position ViewmoreButton absolutely to the right */}
-                     <ViewmoreButton
+                  {hoveredIndex === index && (
+                    <div
                       style={{
                         position: "absolute",
-                        right: "10px",
-                        // bottom: "10px",
+                        top: "0",
+                        left: "0",
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.8)", // Dark overlay
+                        borderRadius: "8px",
+                        overflow: "hidden",
                       }}
-                      onClick={() => handleViewMoreClick(Movie)} // Handle click event
-                    />
-                  </div>
+                    >
+                      {/* Video Iframe */}
+                      <iframe
+                        src={`${Movie.trailerSrc}?autoplay=1&mute=1`} // Autoplay video on hover
+                        title={`trailer-${index}`}
+                        style={{
+                          width: "100%",
+                          height: "50%",
+                          border: "none",
+                          borderRadius: "8px 8px 0 0",
+                        }}
+                        allow="autoplay; encrypted-media"
+                      />
+
+                      {/* Buttons */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "22%",
+                          left: "0",
+                          width: "93%",
+                          height: "50%",
+                          transform: "translateY(50%)", // Adjust the vertical alignment
+                          display: "flex",
+                          flexDirection: "column", // Change to column layout to stack elements vertically
+                          justifyContent: "flex-start",
+                          alignItems: "flex-start",
+                          color: "white",
+                          backgroundColor: "black", // Semi-transparent background
+                          padding: "10px",
+                          gap: "15px",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: "15px",
+                          }}
+                        >
+                          <WatchNowButton movieId={Movie.id} />
+                          <AddToWishlistButton
+                            Movie={Movie}
+                            handleToggleWishlist={handleToggleWishlist}
+                            wishlist={wishlist}
+                          />
+                          <EmojiButton
+                            onEmojiHover={(action) =>
+                              handleEmojiAction(Movie.id, action)
+                            }
+                          />
+                          <ViewmoreButton
+                            onClick={() => handleFlipCard(index)}
+                          />
+                        </div>
+                        {/* Movie details card */}
+                        <MovieDetailsCard
+                          certificate={Movie.certificate}
+                          timing={Movie.timing}
+                          quality={Movie.quality}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+
+                {/* Back side */}
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    backfaceVisibility: "hidden",
+                    transform: "rotateY(180deg)",
+                    backgroundColor: "black",
+                    color: "white",
+                    borderRadius: "8px",
+                  
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <div style={{marginLeft:'8px',lineHeight:'1',color:'#A0A0A0',}}> {/* <h3>MovieName:{Movie.title}</h3> */}
+                  {/* <p style={{ wordBreak: "break-all" }}>{Movie.nature}</p> */}
+                  <p style={{fontSize:'20px',color:'white'}}>About {Movie.movie}</p> 
+                  <p style={{fontSize:'12px',}}>Director:{Movie.director}</p>
+                  <p style={{fontSize:'12px',}}>cast:{Movie.cast}</p>
+                  <p style={{fontSize:'12px',}}>writer:{Movie.writer}</p>
+                  <p style={{fontSize:'12px',}} > Genres:{Movie.genres}</p>
+
+                  </div>
+                 
+                  <button
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      backgroundColor: "blue",
+                      color: "white",
+                      cursor: "pointer",
+                      borderRadius: "4px",
+                    }}
+                    onClick={() => handleFlipCard(index)}
+                  >
+                    Back
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-        {/* Use CarouselNavigation component */}
         <SlideButtons onPrev={handlePrev} onNext={handleNext} />
       </div>
 
-      {/* Display the Wishlist */}
-      <WishlistData wishlist={wishlist} currentIndex={currentIndex} />
-
-      {/* Modal to display movie details */}
-      <Modal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        movie={selectedMovie} // Pass selected movie to the modal
-      />
+      <WishlistData wishlist={wishlist} />
     </div>
   );
 }

@@ -3,7 +3,14 @@ const Movies = [
     src: "https://onlookersmedia.in/wp-content/uploads/2024/01/The-Greatest-of-All-Time-poster.jpg",
     trailerSrc: "https://www.youtube.com/embed/jxCRlebiebw",
     id: 1,
+    nature: "Thriller|Suspense|Mystery|Investigative|Cop Drama|",
+    movie:'GOAT-The Greatest of All Time',
+    director:'Venkat Prabhu',
+    cast:'Vijay,Prashanth,Prabhu Deva,Mohan',
+    writer:'Venkat Prabhu',
+    genres:'Action & Adventure',
     
+
     timing: "2h 15m",
     quality: "HD",
     certificate: "U/A",
